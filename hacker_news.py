@@ -1,5 +1,5 @@
 import requests
-
+import sys
 
 def main():
     top_stories_url = "https://hacker-news.firebaseio.com/v0/topstories.json"
@@ -9,7 +9,12 @@ def main():
 
     num = 1
 
-    for story_id in top_stories_json[:60]:
+    try:
+        length = int(sys.argv[1])
+    except IndexError:
+        length = 60
+
+    for story_id in top_stories_json[:length]:
         story_request = requests.get(story_base_url + str(story_id) + ".json")
         story_json = story_request.json()
         formatted_text = "{}. {} (score: {}, {})".format(num, story_json["title"], story_json["score"], story_id)
